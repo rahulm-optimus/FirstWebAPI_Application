@@ -1,6 +1,6 @@
-﻿using FirstWebAPI_Application.Data;
-using FirstWebAPI_Application.Models;
+﻿using FirstWebAPI_Application.Models;
 using FirstWebAPI_Application.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstWebAPI_Application.Controllers
@@ -24,6 +24,7 @@ namespace FirstWebAPI_Application.Controllers
         }
 
         [HttpGet(Name = "GetAllUsers")]
+        [Authorize(Roles = "reader,writer")]
         //normal IAction method
         //public IActionResult GetAllUsers()
         //{
@@ -31,21 +32,18 @@ namespace FirstWebAPI_Application.Controllers
         //    return Ok(allUsers);
 
         //}
- 
         public async Task<IActionResult> GetAllUsers()
         {
             var allUsers = await _userDetailsRepository.GetAllUsers();
             return Ok(allUsers);
-
         }
-
 
         [HttpGet]
         [Route("{id:int}")]
+        [Authorize(Roles = "reader,writer")]
         public async Task<IActionResult> GetUserByID(int id)
         {
             var userByID = await _userDetailsRepository.GetUserByID(id);
-
             if (userByID is null)
             {
                 return NotFound($"User not found with user ID : {id} ");
@@ -54,31 +52,30 @@ namespace FirstWebAPI_Application.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddUser(UserDetailsDTO user)
         {
             var userEntity = await _userDetailsRepository.CreateUser(user);
             _logger.LogInformation("Item added in the data base");
             return Ok(userEntity);
-
         }
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateUser(int id, UpdateUserDTO user)
         {
             var userEntity = await _userDetailsRepository.UpdateUserById(id, user);
-
             if (userEntity is null)
             {
                 return NotFound($"User not found with the ID : {id}");
             }
-
             return Ok(userEntity);
-
         }
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteUserById(int id)
         {
             var userEntity = await _userDetailsRepository.DeleteUserById(id);
