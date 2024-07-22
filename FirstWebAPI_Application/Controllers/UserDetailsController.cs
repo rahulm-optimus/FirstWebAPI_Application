@@ -14,43 +14,24 @@ namespace FirstWebAPI_Application.Controllers
         //private string[] names = { "Rahul", "Afsal", "Ashwani", "Nishank", "Manish" };
         //private string[] cities = { "Kullu", "Chennai", "Chandigarh", "Bhuvneshwar", "Odisa" };
 
-        //private readonly ILogger<UserDetailsController> _logger;
-
-        //public UserDetailsController(ILogger<UserDetailsController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        //[HttpGet(Name = "GetUserDetails")]
-        //public IEnumerable<UserDetails> Get()
-        //{
-        //    return Enumerable.Range(0, 4).Select(index => new UserDetails
-        //    {
-        //        Id = index,
-        //        Name = names[index],
-        //        City = cities[index],
-        //    })
-        //    .ToArray();
-        //}
-
-        private readonly UsersDBContext _dbContext;
+        private readonly ILogger<UserDetailsController> _logger;
         private readonly IUserDetailsRepository _userDetailsRepository;
 
-        public UserDetailsController(UsersDBContext dbContext, IUserDetailsRepository userDetailsRepository)
+        public UserDetailsController(ILogger<UserDetailsController> logger, IUserDetailsRepository userDetailsRepository)
         {
-            _dbContext = dbContext;
+            _logger = logger;
             _userDetailsRepository = userDetailsRepository;
         }
 
         [HttpGet(Name = "GetAllUsers")]
+        //normal IAction method
         //public IActionResult GetAllUsers()
         //{
         //    var allUsers = _dbContext.UserDetails.ToList();
         //    return Ok(allUsers);
 
         //}
-
-        //async getmethod for above method 
+ 
         public async Task<IActionResult> GetAllUsers()
         {
             var allUsers = await _userDetailsRepository.GetAllUsers();
@@ -76,6 +57,7 @@ namespace FirstWebAPI_Application.Controllers
         public async Task<IActionResult> AddUser(UserDetailsDTO user)
         {
             var userEntity = await _userDetailsRepository.CreateUser(user);
+            _logger.LogInformation("Item added in the data base");
             return Ok(userEntity);
 
         }
