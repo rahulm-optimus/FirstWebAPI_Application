@@ -24,7 +24,13 @@ namespace FirstWebAPI_Application.Controllers
         }
 
         [HttpGet(Name = "GetAllUsers")]
-        [Authorize(Roles = "reader,writer")]
+        [Authorize(Roles = "reader,writer")]       
+        public async Task<IActionResult> GetAllUsers()
+        {
+            throw new Exception("testing ");
+            var allUsers = await _userDetailsRepository.GetAllUsers();
+            return Ok(allUsers);
+        }
         //normal IAction method
         //public IActionResult GetAllUsers()
         //{
@@ -32,11 +38,6 @@ namespace FirstWebAPI_Application.Controllers
         //    return Ok(allUsers);
 
         //}
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var allUsers = await _userDetailsRepository.GetAllUsers();
-            return Ok(allUsers);
-        }
 
         [HttpGet]
         [Route("{id:int}")]
@@ -60,8 +61,7 @@ namespace FirstWebAPI_Application.Controllers
             return Ok(userEntity);
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
+        [HttpPut]        [Route("{id:int}")]
         [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateUser(int id, UpdateUserDTO user)
         {

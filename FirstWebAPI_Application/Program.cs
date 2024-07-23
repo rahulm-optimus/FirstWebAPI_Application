@@ -1,6 +1,7 @@
 
 using System.Text;
 using FirstWebAPI_Application.Data;
+using FirstWebAPI_Application.Middelwares;
 using FirstWebAPI_Application.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -49,7 +50,7 @@ namespace FirstWebAPI_Application
                           }
                           , new List<string>() }
                        });
-            });      
+            });
             //setting up DBContext service in Builder
             builder.Services.AddDbContext<UsersDBContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -105,6 +106,9 @@ namespace FirstWebAPI_Application
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            //globalexceptional handling 
+            app.UseMiddleware<GlobalExceptionalHandler>();
 
             app.UseHttpsRedirection();
 
