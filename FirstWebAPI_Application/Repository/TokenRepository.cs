@@ -17,7 +17,7 @@ namespace FirstWebAPI_Application.Repository
         public string CreateJWTToken(IdentityUser user, List<string> roles)
         {
 
-            //create claims 
+            //Creating claims 
             var claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
@@ -29,7 +29,9 @@ namespace FirstWebAPI_Application.Repository
 
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(_configuration["Jwt:Key"]));
+
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
@@ -37,6 +39,7 @@ namespace FirstWebAPI_Application.Repository
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
                 );
+
             return new JwtSecurityTokenHandler().WriteToken(token);
 
 

@@ -51,16 +51,16 @@ namespace FirstWebAPI_Application
                           , new List<string>() }
                        });
             });
-            //setting up DBContext service in Builder
+            //Setting up DBContext service in Builder
             builder.Services.AddDbContext<UsersDBContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            //reqistering scope for repository pattern 
+            //Reqistering scope for repository pattern 
             builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
             //builder.Services.AddScoped<IUserDetailsRepository, InMemoryRepository>(); //we can change the data source 
-            //adding scope for Token repository
+            //Adding scope for Token repository
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
-            //adding Authentification service
+            //Adding Authentification service
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
                 option.TokenValidationParameters = new TokenValidationParameters
@@ -75,12 +75,12 @@ namespace FirstWebAPI_Application
                     (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 }
                 );
-            //adding Auth dbcontext
+            //Adding auth dbcontext
             builder.Services.AddDbContext<UsersAuthDBContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultAuthConnection"))
             );
 
-            //initial serveice register for Identity usrers
+            //Initial register for Identity usrers
             builder.Services.AddIdentityCore<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("UserDetails")

@@ -17,7 +17,8 @@ namespace FirstWebAPI_Application.Data
             var adminRole = "admin";
             var userRole = "user";
 
-            var roles = new List<IdentityRole> {
+            var roles = new List<IdentityRole> 
+            {
 
                 new IdentityRole
                 {
@@ -27,13 +28,14 @@ namespace FirstWebAPI_Application.Data
                     NormalizedName="writer".ToUpper(),
 
                 },
-            new IdentityRole
+                new IdentityRole
                 {
                     Id=userRole,
                     ConcurrencyStamp=userRole,
                     Name="reader",
                     NormalizedName="reader".ToUpper(),
                 }
+
             };
 
             builder.Entity<IdentityRole>().HasData(roles);

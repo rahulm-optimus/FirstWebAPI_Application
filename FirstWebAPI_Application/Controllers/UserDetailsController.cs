@@ -27,7 +27,9 @@ namespace FirstWebAPI_Application.Controllers
         [Authorize(Roles = "reader,writer")]       
         public async Task<IActionResult> GetAllUsers()
         {
+            //exceptional thrown for testing purpose for global exceptional handling
             throw new Exception("testing ");
+
             var allUsers = await _userDetailsRepository.GetAllUsers();
             return Ok(allUsers);
         }
